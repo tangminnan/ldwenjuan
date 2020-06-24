@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="/css/css.css" type="text/css">
+<title>儿童青少年健康调查问卷</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script type="text/javascript" src="/js/jquery.SuperSlide.2.1.1.js"></script>
+</head>
+<body style="background:#f4f9fd;">
+	<div class="eyes">
+		<img src="images/top.jpg" alt=""/>
+		<p>请选择其中一个问卷类型<br/>然后点“继续”</p>
+		<div class="box">
+			<ul>
+				<li  th:each="ls:${list}" th:value="${ls.id}"><span th:text="${ls.chanpinName}"></span></li>
+				<!--<li value="1">儿童青少年眼健康调查问卷</li> 
+				<li value="2">儿童青少年体质量表</li>
+				<li value="3">疫情期间用眼行为和体育锻炼调查问卷</li> -->
+			</ul>
+		</div>
+		<input class="goon" type="button" value="继续"/>
+	</div>
+	
+	<script type="text/javascript">
+		$(".box li").click(function(){
+			$(this).addClass("on").siblings().removeClass("on");
+		});
+		
+		$(".goon").click(function(){
+			var wenjuan = $(".box .on").val();
+			if(wenjuan == null || wenjuan == ""){
+				alert("请选择问卷！！！");
+				return false;
+			}else{
+				window.location.href="/wenjuan/shouye?id="+wenjuan
+			}
+			
+		})
+		
+	</script>
+</body>
+</html>
+	
+	

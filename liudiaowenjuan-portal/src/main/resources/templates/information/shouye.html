@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head th:include="include :: header">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<title>儿童青少年健康调查问卷</title>
+</head>
+<body class="DLbox">
+	<h3 th:text="${cplist.chanpinName}">眼健康调查问卷</h3>
+	<div class="inBox">
+		<input type="text" id="uname" placeholder="请输入“学生”姓名"/>
+		<input type="text" id="phone" placeholder="请输入您的手机号"/>
+		<input type="text" id="identityCard" placeholder="请填写学生身份证号"/>
+		<input type="text" id="sturelation" placeholder="请填写与学生关系"/>
+		<!-- 
+		<input type="text" id="sex" placeholder="请输入您的性别"/>
+		<input type="text" id="minzu" placeholder="请填写民族"/>
+		<input type="text" id="birthday" placeholder="请输入您出生年月"/>
+		<input type="text" id="school" placeholder="请输入您的学校"/>
+		<input type="text" id="gradeclass" placeholder="请填写年级班级"/>
+		<input type="text" id="address" placeholder="请输入您家庭住址"/>
+		 -->
+	</div>
+	<dl>
+		<dt>致填写人：</dt>
+		<div id="beizhu" style="display: none" th:text="${cplist.beizhu}"></div>
+			<div class="ibox-content no-padding" style="border-color: #f4f9fd;background-color: #f4f9fd;">
+				<div id="content_sn" class="summernote"></div>
+			</div>
+		<dd>为了保护学生眼健康，请确实填写本问卷调查，如有需要我们将与您联系进行随访调查，感谢您的配合！</dd>
+	</dl>
+	<input class="btn" type="button" value="开始答题"/>
+	<div class="copy" style="font-size: .4rem;">山东中医药大学附属眼科医院</div>
+	<div class="copy" style="font-size: .4rem;">山东省青少年视力低下防治中心 </div>
+	<input th:value = "${id}" id="chanpinId"  type="hidden" />
+	<div th:include="include::footer"></div>
+	<script type="text/javascript">
+		$(".btn").click(function(){
+			var uname = $("input[id='uname']").val();
+			var phone = $("input[id='phone']").val();
+			var identityCard = $("input[id='identityCard']").val();
+			var sturelation = $("input[id='sturelation']").val();
+			/* 
+			
+			var sex = $("input[id='sex']").val();
+			var minzu = $("input[id='minzu']").val();
+			var birthday = $("input[id='birthday']").val();
+			var school = $("input[id='school']").val();
+			var gradeclass = $("input[id='gradeclass']").val();
+			var address = $("input[id='address']").val();
+			
+			 */
+			var myreg=/^[1][3,4,5,7,8,9][0-9]{9}$/;
+			var regIdCard = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+			
+			if(uname.trim() == '' || identityCard.trim() == ''
+				|| phone.trim() == ''|| sturelation.trim() == ''){
+				alert("请填写所有信息！！！");
+				return false;
+			}
+		    if (!regIdCard.test(identityCard)){
+		    	alert("请输入正确的身份证号！！！");
+				return false;
+		    }
+			if (!myreg.test(phone)){
+				alert("请输入正确的手机号码！！！");
+				return false;
+		    }
+			window.location.href="/wenjian/kaishidati?id="+$("#chanpinId").val()
+															+"&uname="+uname
+															+"&identityCard="+identityCard
+															+"&phone="+phone
+															+"&sturelation="+sturelation
+															//+"&sex="+sex
+															//+"&minzu="+minzu
+															//+"&birthday="+birthday
+															//+"&school="+school
+															//+"&gradeclass="+gradeclass
+															//+"&address="+address
+															
+			
+			
+			
+		})
+		
+		$(function () {
+	        var beizhu = $("#beizhu").text();
+	        $('#content_sn').summernote('code', beizhu);
+	        $('#content_sn').summernote('destroy');
+    	});
+	
+	</script>
+	
+</body>
+</html>
+

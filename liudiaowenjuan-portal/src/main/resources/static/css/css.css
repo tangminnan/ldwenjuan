@@ -1,0 +1,60 @@
+@charset "utf-8";
+html {-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;}
+img {
+max-width: 100%;
+height: auto;
+width:auto\9; /* ie8 */
+-ms-interpolation-mode:bicubic;
+}
+/* 初始化 */
+*{margin:0; padding:0; border:none;box-sizing:border-box;}
+body{max-width:1024px;margin:0 auto;background-color:#f7f7f7;color:#231815;font-size: .3rem;font-family: Microsoft YaHei,Tahoma,Arial,sans-serif;}
+.name{padding:.5rem;}
+.pre{font-size: .24rem;overflow: hidden;margin:0 7% .5rem;}
+.pre a{float: left;text-decoration:none;}
+.pre span{float:right;}
+progress{
+	float: left;height: .2rem;margin-left:.1rem;width:70%;
+    margin-top:.1rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    background: #d9dbdd;
+    border-radius:.3rem;
+  } 
+ progress::-webkit-progress-bar {
+    background: #d9dbdd;
+    border-radius: .3rem;
+  } 
+progress::-webkit-progress-value {
+    background-color: #0b92fb;
+    border-radius: .3rem;
+	border:.02rem solid #000;
+  } 
+progress::-moz-progress-bar {
+    background-color: #15afd8;
+    border-radius: .3rem;
+  }
+.bianbian{}
+.bianbian h3{font-weight: normal;font-size: .36rem;margin-bottom:.8rem;}
+.bianbian li{text-align: center;list-style:none;width:93%;background: #fff;display: inline-block;line-height: .5rem;margin-bottom: .3rem;border-radius:.8rem;border:1px solid #eee;padding: .3rem;}
+.bianbian li.on{background: #d6ecfd;color: #0b92fb;}
+.btn{width: 80%;font-size: .36rem;color: #fff;background: #018cf8;border-radius:.5rem;display: block;margin:.4rem auto;height: 1rem;outline: none;}
+.bianbian textarea{width: 100%;background: #fff;font-size: .28rem;border:1px solid #0b92fb;padding:.15rem;height: 3.4rem;resize:none;}
+.CGtj{font-size: .48rem;text-align: center;background:url(../images/tijiao.png) no-repeat top center;-webkit-background-size:3.7rem 3.2rem;background-size:3.7rem 3.2rem;padding-top: 3.8rem;margin-top: 1.3rem;}
+.DLbox{background:url(../images/bg.png) no-repeat center;-webkit-background-size:100% 100%;background-size:100% 100%;padding:.8rem .6rem 0;}
+.DLbox h3{text-align: center;font-weight: bold;font-size: .6rem;color: #0388f9;background:url(../images/ling.png) no-repeat bottom center;-webkit-background-size:3.5rem .04rem;background-size:3.5rem .04rem;padding-bottom:.2rem;letter-spacing:2px;margin-bottom: 1rem;}
+.DLbox .inBox{margin-bottom:.5rem;}
+.DLbox .inBox input{display: block;width: 100%;background: #fff;height: 1rem;border:.02rem solid #0388f9;border-radius:.5rem;margin-bottom:.36rem;text-align: center;font-size: .3rem;outline: none;}
+.DLbox dl{font-size: .24rem;line-height:.36rem;}
+.DLbox dl dt{color: #0388f9;}
+.DLbox .copy{text-align: center;font-size: .2rem;color: #018cf8;}
+.eyes{text-align: center;}
+.eyes p{padding:.4rem;}
+.eyes .box{padding:0 .6rem;}
+.eyes .box li{line-height:1rem;background: #fff;color: #018cf8;border:1px solid #018cf8;border-radius:.5rem;width: 100%;margin-bottom: .6rem;list-style:none;}
+.eyes .box li.on{background: #018cf8;color: #fff;}
+.eyes .goon{width:60%;height: 1rem;display: block;background: #fde5e5 url(../images/go.png) no-repeat 70% center;margin:1rem auto;font-size: .36rem;color: #fa2121;border:1px solid #fa2121;border-radius:.5rem;outline: none;-webkit-background-size:.49rem .42rem;background-size:.49rem .42rem;}
+
+
