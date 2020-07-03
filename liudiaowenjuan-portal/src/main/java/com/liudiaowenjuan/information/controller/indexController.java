@@ -114,14 +114,16 @@ public class indexController {
 			}
 			List<ChanpinRecordDetailsDO> titlelist = chanpin.getTitlelist();
 			for (ChanpinRecordDetailsDO chanpinRecordDetailsDO : titlelist) {
-				ChanpinRecordDetailsDO crd2 = new ChanpinRecordDetailsDO();
-				crd2.setRecordId(crl.getId());
-				crd2.setTitleId(chanpinRecordDetailsDO.getTitleId());
-				crd2.setTitleName(chanpinRecordDetailsDO.getTitleName());
-				crd2.setTitleType(chanpinRecordDetailsDO.getTitleType());
-				crd2.setRemarks(chanpinRecordDetailsDO.getRemarks());
-				crd2.setAddTime(new Date());
-				chanpinRecordDetailsService.save(crd2);
+				if(chanpinRecordDetailsDO.getTitleType() != 4){
+					ChanpinRecordDetailsDO crd2 = new ChanpinRecordDetailsDO();
+					crd2.setRecordId(crl.getId());
+					crd2.setTitleId(chanpinRecordDetailsDO.getTitleId());
+					crd2.setTitleName(chanpinRecordDetailsDO.getTitleName());
+					crd2.setTitleType(chanpinRecordDetailsDO.getTitleType());
+					crd2.setRemarks(chanpinRecordDetailsDO.getRemarks());
+					crd2.setAddTime(new Date());
+					chanpinRecordDetailsService.save(crd2);
+				}
 			}
 			
 			

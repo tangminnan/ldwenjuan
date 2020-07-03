@@ -38,6 +38,8 @@
 		
 		<input th:value="${cpchang}" id="cpchang" type="hidden" />
 		<input th:value="${num}" id="num" type="hidden" />
+		<input th:value="${sort}" id="sort" type="hidden" />
+		
 	</div>
 	<div id="jiazai"><img alt="" src="/images/loading-2.gif" style="padding-top: 3rem;padding-left: 46%; display: none;"></div>
 
@@ -54,16 +56,25 @@
 
 	
 	$("#num").val(0);
+	$("#sort").val(1);
 	var i = 0;
 	title(i);
 	document.getElementById("jindu").setAttribute("max",$("input[id='cpchang']").val());
 	document.getElementById("jindu").setAttribute("value",0);
 	$("#jindulv").text("0%");
 	$("input[class='btn']").click(function(){
-		var lth = $(".on").length;
-		if(lth<=0){
-			alert("请选择！！！");
-			return false;
+		if($("#tittype").val() != 4){
+			var lth = $(".on").length;
+			if(lth<=0){
+				alert("请选择！！！");
+				return false;
+			}
+			
+		}
+		if($("#tittype").val() != 4){
+			var sort = $("#sort").val();
+			sort++;
+			$("#sort").val(sort);
 		}
 		
 		var cpchang = $("input[id='cpchang']").val();
@@ -90,7 +101,6 @@
 				remarkss.push($(this).text());
 				reid.push($(this).val());
 			})
-			
 			titlelist.push({titleId:$("#timuId").val(),titleName:$("#timuName").val(),titleType:$("#tittype").val(),remarks:remarkss.join("--"),reid:reid.join(",")});
 			document.getElementById("jindu").setAttribute("max",cpchang);
 			document.getElementById("jindu").setAttribute("value",num);
@@ -111,14 +121,22 @@
 		}
 		$("#num").val(num);
 		title(num,titlelist[num].titleId,titlelist[num].reid);
-				
+		console.info(titlelist[num].type);
+		if(titlelist[num].titleType!=4){
+			var sort = $("#sort").val();
+			sort--;
+			$("#sort").val(sort);
+		}
 		titlelist.pop();
+		
+		
 	})
  
 	
 					
 	
 	function title(i,titleId,reid){
+		
 		$.ajax({
 			cache:true,
 			type:"get",
@@ -128,7 +146,7 @@
 				
 			},
 			success:function(data){
-				//console.info(data);
+				//console.info(data[i].type);
 				if(data.length>0){
 					
 					var html = '';
@@ -136,25 +154,40 @@
 							html += '<input value="'+data[i].type+'" id="tittype" type="hidden" />'
 							html += '<input value="'+data[i].timuName+'" id="timuName" type="hidden" />'
 							html += '<input value="'+data[i].id+'" id="timuId" type="hidden" />'
-							html += '<h3>'+(i+1)+"："+data[i].timuName+'（单选）</h3>'
+							html += '<h3>'+$("#sort").val()+"："+data[i].timuName+'（单选）</h3>'
+
 						}
 						if(data[i].type == 2){
 							html += '<input value="'+data[i].type+'" id="tittype" type="hidden" />'
 							html += '<input value="'+data[i].timuName+'" id="timuName" type="hidden" />'
 							html += '<input value="'+data[i].id+'" id="timuId" type="hidden" />'
-							html += '<h3>'+(i+1)+"："+data[i].timuName+'（多选）</h3>'
+							html += '<h3>'+$("#sort").val()+"："+data[i].timuName+'（多选）</h3>'
+						}
+						if(data[i].type == 4){
+							html += '<input value="'+data[i].type+'" id="tittype" type="hidden" />'
+							html += '<input value="说明" id="timuName" type="hidden" />'
+							html += '<input value="'+data[i].id+'" id="timuId" type="hidden" />'
+							/* html += '<div class="ibox-content no-padding" style="border-color: #f4f9fd;background-color: #f4f9fd;">'
+							html += '	<div id="content_sn" class="summernote"></div>'
+							html += '</div>' */
+							html += '<h3>'+data[i].timuName+'</h3>'
+
 						}
 						html += '<ul id="titlchoose"></ul>'
 						
 					$("#titl").html(html);
-					
+						/* $('#content_sn').summernote('code', data[i].timuName);
+				        $('#content_sn').summernote('destroy'); */
 					titlechoose(data[i].id,data[i].type,titleId,reid);
+					
 				}
 			}			
 		})
 	}
 	function titlechoose(id,type,titleId,reid){
 		
+		if(type != 4){
+
 		$.ajax({
 			cache:true,
 			type:"get",
@@ -191,6 +224,7 @@
 				}
 			}
 		})
+	}
 	}
 
 	
