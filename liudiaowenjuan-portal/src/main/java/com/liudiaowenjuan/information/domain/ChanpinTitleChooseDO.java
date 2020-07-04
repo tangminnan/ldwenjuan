@@ -28,6 +28,29 @@ public class ChanpinTitleChooseDO implements Serializable {
 	//状态1：正常2：禁用
 	private Integer delFlag;
 
+	private Integer type;
+	private Integer jumpFlag;
+	private Integer jumpTitleId;
+	
+	
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	public Integer getJumpFlag() {
+		return jumpFlag;
+	}
+	public void setJumpFlag(Integer jumpFlag) {
+		this.jumpFlag = jumpFlag;
+	}
+	public Integer getJumpTitleId() {
+		return jumpTitleId;
+	}
+	public void setJumpTitleId(Integer jumpTitleId) {
+		this.jumpTitleId = jumpTitleId;
+	}
 	/**
 	 * 设置：
 	 */

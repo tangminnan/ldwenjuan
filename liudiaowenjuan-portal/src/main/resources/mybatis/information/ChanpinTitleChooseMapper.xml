@@ -4,11 +4,11 @@
 <mapper namespace="com.liudiaowenjuan.information.dao.ChanpinTitleChooseDao">
 
 	<select id="get" resultType="com.liudiaowenjuan.information.domain.ChanpinTitleChooseDO">
-		select `id`,`timu_id`,`choose_name`,`sort`,`add_time`,`del_flag` from t_chanpin_title_choose where id = #{value}
+		select `id`,`timu_id`,`choose_name`,`sort`,`add_time`,`del_flag`,type,jump_flag,jump_title_id from t_chanpin_title_choose where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.liudiaowenjuan.information.domain.ChanpinTitleChooseDO">
-		select `id`,`timu_id`,`choose_name`,`sort`,`add_time`,`del_flag` from t_chanpin_title_choose
+		select `id`,`timu_id`,`choose_name`,`sort`,`add_time`,`del_flag`,type,jump_flag,jump_title_id from t_chanpin_title_choose
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="timuId != null and timuId != ''"> and timu_id = #{timuId} </if>
@@ -16,6 +16,9 @@
 		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
 		  		  <if test="addTime != null and addTime != ''"> and add_time = #{addTime} </if>
 		  		  <if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="jumpFlag != null and jumpFlag != ''"> and jump_flag = #{jumpFlag} </if>
+		  		  <if test="jumpTitleId != null and jumpTitleId != ''"> and jump_title_id = #{jumpTitleId} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -39,6 +42,9 @@
 		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
 		  		  <if test="addTime != null and addTime != ''"> and add_time = #{addTime} </if>
 		  		  <if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="jumpFlag != null and jumpFlag != ''"> and jump_flag = #{jumpFlag} </if>
+		  		  <if test="jumpTitleId != null and jumpTitleId != ''"> and jump_title_id = #{jumpTitleId} </if>
 		  		</where>
 	</select>
 	 
@@ -49,7 +55,10 @@
 			`choose_name`, 
 			`sort`, 
 			`add_time`, 
-			`del_flag`
+			`del_flag`,
+			type,
+			jump_flag,
+			jump_title_id
 		)
 		values
 		(
@@ -57,7 +66,10 @@
 			#{chooseName}, 
 			#{sort}, 
 			#{addTime}, 
-			#{delFlag}
+			#{delFlag},
+			#{type},
+			#{jumpFlag},
+			#{jumpTitleId}
 		)
 	</insert>
 	 
@@ -68,7 +80,10 @@
 			<if test="chooseName != null">`choose_name` = #{chooseName}, </if>
 			<if test="sort != null">`sort` = #{sort}, </if>
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
-			<if test="delFlag != null">`del_flag` = #{delFlag}</if>
+			<if test="delFlag != null">`del_flag` = #{delFlag},</if>
+			<if test="type != null">`type` = #{type},</if>
+			<if test="jumpFlag != null">`jump_flag` = #{jumpFlag},</if>
+			<if test="jumpTitleId != null">`jump_title_id` = #{jumpTitleId}</if>
 		</set>
 		where id = #{id}
 	</update>
