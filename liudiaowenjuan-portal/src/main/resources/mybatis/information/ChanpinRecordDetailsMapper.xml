@@ -4,11 +4,11 @@
 <mapper namespace="com.liudiaowenjuan.information.dao.ChanpinRecordDetailsDao">
 
 	<select id="get" resultType="com.liudiaowenjuan.information.domain.ChanpinRecordDetailsDO">
-		select `id`,`record_id`,`title_id`,`title_type`,`remarks`,`add_time`,`del_flag`,title_name from t_chanpin_record_details where id = #{value}
+		select `id`,`record_id`,`title_id`,`title_type`,`remarks`,`add_time`,`del_flag`,title_name,choose_ids,choose_sort from t_chanpin_record_details where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.liudiaowenjuan.information.domain.ChanpinRecordDetailsDO">
-		select `id`,`record_id`,`title_id`,`title_type`,`remarks`,`add_time`,`del_flag`,title_name from t_chanpin_record_details
+		select `id`,`record_id`,`title_id`,`title_type`,`remarks`,`add_time`,`del_flag`,title_name ,choose_ids,choose_sort from t_chanpin_record_details
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="recordId != null and recordId != ''"> and record_id = #{recordId} </if>
@@ -55,7 +55,9 @@
 			`remarks`, 
 			`add_time`, 
 			`del_flag`,
-			title_name
+			title_name,
+			choose_ids,
+			choose_sort
 		)
 		values
 		(
@@ -65,7 +67,9 @@
 			#{remarks}, 
 			#{addTime}, 
 			#{delFlag},
-			#{titleName}
+			#{titleName},
+			#{chooseIds},
+			#{chooseSort}
 		)
 	</insert>
 	 

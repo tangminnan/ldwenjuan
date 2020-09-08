@@ -32,6 +32,25 @@ public class ChanpinRecordDetailsDO implements Serializable {
 	//状态1：正常2：禁止
 	private Integer delFlag;
 
+	private String chooseIds;
+	private String chooseSort;
+
+	public String getChooseIds() {
+		return chooseIds;
+	}
+
+	public void setChooseIds(String chooseIds) {
+		this.chooseIds = chooseIds;
+	}
+
+	public String getChooseSort() {
+		return chooseSort;
+	}
+
+	public void setChooseSort(String chooseSort) {
+		this.chooseSort = chooseSort;
+	}
+
 	
 	
 	

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="/css/css.css" type="text/css">
+<title>儿童青少年健康调查问卷</title>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/Font.js"></script>
+<script type="text/javascript" src="/js/jquery.SuperSlide.2.1.1.js"></script>
+</head>
+<body>
+	<div class="name">
+		<div class="pre">
+			<a class="shangyiti" style="font-size: .3rem;">< 上一题</a>
+			<progress value="50" max="100" id="jindu"></progress>
+			<span id="jindulv">50%</span>
+		</div>
+		<div class="bianbian" id="titl" style="margin-left: .3rem;">
+			<h3>每天看手机的时长多少？（单选）</h3>
+			<ul id="titlchoose">
+				<!-- <li class="on">20分钟</li>
+				<li>30分钟</li>
+				<li>1小时</li> -->
+			</ul>
+		</div>
+		<input class="btn" type="button" value="继续答题"/>
+		
+		<input th:value="${id}" id="chanpinId" type="hidden" />	
+		<input th:value="${uname}" id="uname" type="hidden" />
+		<input th:value="${identityCard}" id="identityCard" type="hidden" />
+		<input th:value="${phone}" id="phone" type="hidden" />
+		<input th:value="${sturelation}" id="sturelation" type="hidden" />
+		
+		<input th:value="${cpchang}" id="cpchang" type="hidden" />
+		<input th:value="${num}" id="num" type="hidden" />
+		<input th:value="${sort}" id="sort" type="hidden" />
+		
+	</div>
+	<div id="jiazai"><img alt="" src="/images/loading-2.gif" style="padding-top: 3rem;padding-left: 46%; display: none;"></div>
+
+	<script type="text/javascript">
+
+
+        var datas = [];
+        $.ajax({
+            cache:true,
+            type:"get",
+            url:"/wenjian/timuxiangq",
+            data:{id:$("input[id='chanpinId']").val()},
+            error:function(res){
+            },
+            success:function(data){
+                //console.info(data);
+				if (data.length>0){
+                    for (var j = 0; j < data.length; j++) {
+                        datas.push(data[j]);
+                    }
+                    title(data,0);
+				}
+
+            }
+        })
+
+
+        var titlelist=[];var hui=[];
+        var titlexinxi=[
+            {titleId:0,titleName:"姓名",titleType:1,remarks:$("input[id='uname']").val()},
+            {titleId:0,titleName:"身份证号",titleType:1,remarks:$("input[id='identityCard']").val()},
+            {titleId:0,titleName:"手机号",titleType:1,remarks:$("input[id='phone']").val()},
+            {titleId:0,titleName:"与学生关系",titleType:1,remarks:$("input[id='sturelation']").val()}
+        ];
+
+
+        $("#num").val(0);
+        $("#sort").val(1);
+        document.getElementById("jindu").setAttribute("max",$("input[id='cpchang']").val());
+        document.getElementById("jindu").setAttribute("value",0);
+        $("#jindulv").text("0%");
+        $("input[class='btn']").click(function(){
+            if($("#tittype").val() == 1 || $("#tittype").val() == 2){
+                var lth = $(".on").length;
+                if(lth<=0){
+                    alert("请选择！！！");
+                    return false;
+                }
+            }
+            if($("#tittype").val() == 3){
+                var k = 0;
+                $("input[id='kong']").each(function(){
+                    if($(this).val().trim() == '' ){
+                        k++;
+                    }
+                })
+                if(k>0){
+                    alert("不能有空值！！！");
+                    return false;
+                }
+            }
+
+            /* if($("#tittype").val() != 4){
+                var sort = $("#sort").val();
+                sort++;
+                $("#sort").val(sort);
+            } */
+
+            var cpchang = $("input[id='cpchang']").val();
+            var num = $("#num").val();
+            num++;
+            if(num>=cpchang){
+                var remarkss=[];
+                var reid=[];
+                var sortss=[];
+                if($("#tittype").val() == 1){
+
+                    var choosetype = $(".bianbian .on").children("#choosetype").val();
+                    if(choosetype == 1){
+                        var shuo = $(".bianbian .on").text();
+                        var shuov = $(".bianbian .on").next().children("#kong").val();
+
+                        remarkss.push(shuo+"("+shuov+")");
+                        sortss.push(shuo+"("+shuov+")");
+                    }else{
+                        remarkss.push($(".bianbian .on").text());
+                        var sorts = $(".bianbian .on").children("#sorts").val();
+                        sortss.push(sorts);
+                        var jumpFlag = $(".bianbian .on").children("#jumpFlag").val();
+                        if(jumpFlag==1){
+                            var jumpTitleId = $(".bianbian .on").children("#jumpTitleId").val();
+                            for(var i = 0 ;i<datas.chanpin;i++){
+                                if(jumpTitleId == datas[i].id){
+                                    $("#num").val(i);
+                                }
+                            }
+                        }
+                    }
+                    reid.push($(".bianbian .on").val());
+
+                }
+                if($("#tittype").val() == 2){
+                    $(".bianbian .on").each(function(){
+                        var choosetype = $(this).children().eq(0).val();
+                        if(choosetype == 1){
+                            var shuo = $(this).text();
+                            var shuov = $(this).next().children("#kong").val();
+
+                            remarkss.push(shuo+"("+shuov+")");
+                            sortss.push(shuo+"("+shuov+")");
+                        }else{
+                            remarkss.push($(this).text());
+                            var sorts = $(this).children("#sorts").val();
+                            sortss.push(sorts);
+                        }
+                        reid.push($(this).val());
+                    })
+                }
+                var cc=[];
+                if($("#tittype").val() == 3){
+                    //console.info($(".bianbian li").contents());
+                    var kk = $(".bianbian li").contents();
+                    for(var i = 0;i<kk.length;i++){
+                        if(kk[i].id == "kong"){
+                            cc.push("("+kk[i].value+")");
+                        }else{
+                            cc.push(kk[i].data);
+                        }
+                    }
+                    var str = cc.join("");
+                    cc = null;
+                    //console.info(str);
+                    remarkss.push(str);
+                    sortss.push(str);
+                    $(".bianbian li").each(function(){
+                        reid.push($(this).val());
+                    })
+                }
+
+                titlelist.push({titleId:$("#timuId").val(),titleName:$("#timuName").val(),titleType:$("#tittype").val(),remarks:remarkss.join("--"),chooseIds:reid.join(","),chooseSort:sortss.join("--")});
+
+                tijiao();
+                //alert("提交");
+            }else{
+                $("#num").val(num);
+                var remarkss=[];
+                var reid=[];
+                var sortss=[];
+                if($("#tittype").val() == 1){
+
+                    var choosetype = $(".bianbian .on").children("#choosetype").val();
+                    if(choosetype == 1){
+                        var shuo = $(".bianbian .on").text();
+                        var shuov = $(".bianbian .on").next().children("#kong").val();
+
+                        remarkss.push(shuo+"("+shuov+")");
+                        sortss.push(shuo+"("+shuov+")");
+                    }else{
+                        remarkss.push($(".bianbian .on").text());
+                        var sorts = $(".bianbian .on").children("#sorts").val();
+                        sortss.push(sorts);
+                        var jumpFlag = $(".bianbian .on").children("#jumpFlag").val();
+                        if(jumpFlag==1){
+                            var jumpTitleId = $(".bianbian .on").children("#jumpTitleId").val();
+                            for(var i = 0 ;i<datas.chanpin.length;i++){
+                                if(jumpTitleId == datas[i].id){
+                                    $("#num").val(i);
+                                }
+                            }
+                        }
+                    }
+                    reid.push($(".bianbian .on").val());
+
+                }
+                if($("#tittype").val() == 2){
+                    $(".bianbian .on").each(function(){
+                        var choosetype = $(this).children().eq(0).val();
+                        if(choosetype == 1){
+                            var shuo = $(this).text();
+                            var shuov = $(this).next().children("#kong").val();
+
+                            remarkss.push(shuo+"("+shuov+")");
+                            sortss.push(shuo+"("+shuov+")");
+                        }else{
+                            remarkss.push($(this).text());
+                            var sorts = $(this).children("#sorts").val();
+                            sortss.push(sorts);
+                        }
+                        reid.push($(this).val());
+                    })
+                }
+                var cc=[];
+                if($("#tittype").val() == 3){
+                    //console.info($(".bianbian li").contents());
+                    var kk = $(".bianbian li").contents();
+                    for(var i = 0;i<kk.length;i++){
+                        if(kk[i].id == "kong"){
+                            cc.push("("+kk[i].value+")");
+                        }else{
+                            cc.push(kk[i].data);
+                        }
+                    }
+                    var str = cc.join("");
+                    cc = null;
+                    //console.info(str);
+                    remarkss.push(str);
+                    sortss.push(str);
+                    $(".bianbian li").each(function(){
+                        reid.push($(this).val());
+                    })
+                }
+                $("input[id='kong']").each(function(){
+                    $(this).attr('value', $(this).val());
+                })
+                hui.push($("#titl").html());
+                titlelist.push({titleId:$("#timuId").val(),titleName:$("#timuName").val(),titleType:$("#tittype").val(),remarks:remarkss.join("--"),chooseIds:reid.join(","),chooseSort:sortss.join("--")});
+                document.getElementById("jindu").setAttribute("max",cpchang);
+                document.getElementById("jindu").setAttribute("value",$("#num").val());
+                var jinlv = Math.floor($("#num").val()/cpchang*100);
+                $("#jindulv").text(jinlv+"%");
+                title(datas,$("#num").val());
+            }
+            //console.info(titlelist);
+            //console.info(hui);
+        })
+
+        $(".shangyiti").click(function(){
+            var num = $("#num").val();
+            num--;
+            if(num<=-1){
+                alert("当前已经到第一题啦！！！");
+                return false;
+            }
+            $("#num").val(titlelist.length-1);
+            $("#titl").html(hui[hui.length-1]);
+
+            titlelist.pop();
+            hui.pop();
+
+        })
+
+
+        function title(data,i) {
+            //console.info(data[i]);
+
+            var html = '';
+            if (data[i].chanpin.type == 1) {
+                html += '<input value="' + data[i].chanpin.type + '" id="tittype" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.timuName + '" id="timuName" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.id + '" id="timuId" type="hidden" />'
+                html += '<h3>' + data[i].chanpin.timuName + '（单选）</h3>'
+
+            }
+            if (data[i].chanpin.type == 2) {
+                html += '<input value="' + data[i].chanpin.type + '" id="tittype" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.timuName + '" id="timuName" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.id + '" id="timuId" type="hidden" />'
+                html += '<h3>' + data[i].chanpin.timuName + '（多选）</h3>'
+            }
+            if (data[i].chanpin.type == 3) {
+                html += '<input value="' + data[i].chanpin.type + '" id="tittype" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.timuName + '" id="timuName" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.id + '" id="timuId" type="hidden" />'
+                html += '<h3>' + data[i].chanpin.timuName + '</h3>'
+            }
+            if (data[i].chanpin.type == 4) {
+                html += '<input value="' + data[i].chanpin.type + '" id="tittype" type="hidden" />'
+                html += '<input value="说明" id="timuName" type="hidden" />'
+                html += '<input value="' + data[i].chanpin.id + '" id="timuId" type="hidden" />'
+                html += '<h3>' + data[i].chanpin.timuName + '</h3>'
+
+            }
+            html += '<ul id="titlchoose">'
+
+            if (data[i].chanpin.type != 4) {
+
+				for (var j = 0; j < data[i].details[0].length; j++) {
+					if (data[i].chanpin.type == 1) {
+						if (data[i].details[0][j].type == 1) {
+							var str1 = data[i].details[0][j].chooseName.replace(/_/g, "");
+							html += '<li value="' + data[i].details[0][j].id + '" id="dan" >'
+							html += '<input value="' + data[i].details[0][j].jumpFlag + '" id="jumpFlag" type="hidden" />'
+							html += '<input value="' + data[i].details[0][j].jumpTitleId + '" id="jumpTitleId" type="hidden" />'
+                            html += '<input value="' + data[i].details[0][j].sort + '" id="sorts" type="hidden" />'
+							html += '<input value="' + data[i].details[0][j].type + '" id="choosetype" type="hidden" />' + str1 + '</li>'
+							html += '<li id="shuom" style="display:none;"><input id="kong" type="text" style="height: .5rem;width: 5rem;border-bottom: 1px solid #000;line-height: 1rem;font-size: .4rem;" /></li>'
+
+						} else {
+							html += '<li value="' + data[i].details[0][j].id + '" id="dan" >'
+							html += '<input value="' + data[i].details[0][j].jumpFlag + '" id="jumpFlag" type="hidden" />'
+							html += '<input value="' + data[i].details[0][j].jumpTitleId + '" id="jumpTitleId" type="hidden" />'
+                            html += '<input value="' + data[i].details[0][j].sort + '" id="sorts" type="hidden" />'
+							html += '<input value="' + data[i].details[0][j].type + '" id="choosetype" type="hidden" />' + data[i].details[0][j].chooseName + '</li>'
+						}
+					}
+					if (data[i].chanpin.type == 3) {
+						if (data[i].details[0][j].type == 1) {
+							var str1 = data[i].details[0][j].chooseName.replace(/_/g, '<input id="kong" type="text" style="height: .5rem;width: 1rem;border-bottom: 1px solid #000;line-height: 1rem;font-size: .4rem;" />');
+							html += '<li value="' + data[i].details[0][j].id + '" >' + str1 + '</li>'
+						}
+					}
+					if (data[i].chanpin.type == 2) {
+						if (data[i].details[0][j].type == 1) {
+							var str1 = data[i].details[0][j].chooseName.replace(/_/g, "");
+							html += '<li value="' + data[i].details[0][j].id + '" id="duo" >'
+							html += '<input value="' + data[i].details[0][j].type + '" id="choosetype" type="hidden" />' + str1 + '</li>'
+							html += '<li id="shuom" style="display:none;"><input id="kong" type="text" style="height: .5rem;width: 5rem;border-bottom: 1px solid #000;line-height: 1rem;font-size: .4rem;" /></li>'
+						} else {
+							html += '<li value="' + data[i].details[0][j].id + '" id="duo" >'
+                            html += '<input value="' + data[i].details[0][j].sort + '" id="sorts" type="hidden" />'
+							html += '<input value="' + data[i].details[0][j].type + '" id="choosetype" type="hidden" />' + data[i].details[0][j].chooseName + '</li>'
+						}
+					}
+				}
+			}
+            html += '</ul>';
+
+            $("#titl").html(html);
+
+		}
+
+
+
+        $(".bianbian").on('click','#dan',function(){
+            $(this).addClass("on").siblings().removeClass("on");
+
+            $(".bianbian .on").each(function(){
+                //console.info($(this).attr("class"));
+                if($(this).children("#choosetype").val()==1){
+                    $("#shuom").show();
+                }else{
+                    $("#shuom").hide();
+                }
+            })
+
+        });
+
+
+
+        $(".bianbian").on('click','#duo',function(){
+            $(this).addClass("on");
+            $(".bianbian .on").each(function(){
+                if($(this).children("#choosetype").val()==1){
+                    $("#shuom").show();
+                }else{
+                    $("#shuom").hide();
+                }
+            })
+        });
+        $(".bianbian").on('click','.on',function(){
+            $(this).removeClass("on");
+            $(".bianbian .on").each(function(){
+                if($(this).children("#choosetype").val()==1){
+                    $("#shuom").show();
+                }else{
+                    $("#shuom").hide();
+                }
+            })
+        });
+
+
+        var chanpin={
+            chanpinId:$("input[id='chanpinId']").val(),
+            titlexinxi:titlexinxi,
+            titlelist:titlelist,
+        };
+
+        function tijiao(){
+
+            $.ajax({
+                cathe:true,
+                type:"post",
+                url:"/save/datishuju",
+                dataType:'json',
+                contentType : "application/json",
+                data:JSON.stringify(chanpin),
+                beforeSend:function(XMLHttpRequest){
+                    $(".name").hide();
+                    $("#jiazai").show();
+                },
+                error:function(res){
+                },
+                success:function(data){
+                    if(data.code == 0){
+                        window.location.href="/shaichawenjuan/tijiaochenggong"
+                    }
+                },
+                complete: function (da) {
+                    $(".name").show();
+                    $("#jiazai").hide();
+                },
+
+            })
+
+        }
+	
+	//禁止ios返回键
+	history.pushState(null, null, document.URL); 
+		 window.addEventListener('popstate', function() {
+		 window.location.href='#';
+	});
+
+	
+	//禁止安卓手机物理返回键
+    XBack = {};
+ 
+	(function(XBack) {
+		XBack.STATE = 'x - back';
+		XBack.element;
+ 
+		XBack.onPopState = function(event) {
+			event.state === XBack.STATE && XBack.fire();
+			XBack.record(XBack.STATE); //初始化事件时，push一下
+		};
+ 
+		XBack.record = function(state) {
+			history.pushState(state, null, location.href);
+		};
+ 
+		XBack.fire = function() {
+			var event = document.createEvent('Events');
+			event.initEvent(XBack.STATE, false, false);
+			XBack.element.dispatchEvent(event);
+		};
+ 
+		XBack.listen = function(listener) {
+			XBack.element.addEventListener(XBack.STATE, listener, false);
+		};
+ 
+		XBack.init = function() {
+			XBack.element = document.createElement('span');
+			window.addEventListener('popstate', XBack.onPopState);
+			XBack.record(XBack.STATE);
+		};
+ 
+	})(XBack); // 引入这段js文件
+ 
+	XBack.init();
+	XBack.listen(function() {});
+	
+	//取消
+	//window.removeEventListener('popstate',function(){}); 
+
+	
+	</script>
+</body>
+</html>
+

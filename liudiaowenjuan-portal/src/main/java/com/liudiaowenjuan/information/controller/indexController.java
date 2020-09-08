@@ -1,9 +1,6 @@
 package com.liudiaowenjuan.information.controller;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,7 +66,27 @@ public class indexController {
 		map.put("chanpinId", id);
 		int list = chanpinDetailsService.count(map);
 		model.addAttribute("cpchang",list);
-		return "information/wenjuan1";
+		return "information/wenjuan5";
+	}
+
+	@GetMapping("/wenjian/timuxiangq")
+	@ResponseBody
+	List<Map<String,Object>> timuxiangq(Integer id){
+		List<Map<String,Object>> bb = new ArrayList<Map<String,Object>>();
+		Map<String,Object> map1 = new HashMap<>();
+		map1.put("chanpinId",id);
+		List<ChanpinDetailsDO> list1 = chanpinDetailsService.list(map1);
+		for (ChanpinDetailsDO ard : list1 ) {
+			Map<String,Object> map3 = new HashMap<>();
+			List<Object> ll = new ArrayList<>();
+			Map<String,Object> map2 = new HashMap<>();
+			map2.put("timuId",ard.getId());
+			ll.add(chanpinTitleChooseService.list(map2));
+			map3.put("chanpin",ard);
+			map3.put("details",ll);
+			bb.add(map3);
+		}
+		return bb;
 	}
 	
 	@GetMapping("/querywenjuan/chanpinDetails")
@@ -97,6 +114,12 @@ public class indexController {
 	Map<String,Object> datishuju(@RequestBody ChanpinRecordListDO chanpin){
 		Map<String,Object> map = new HashMap<>();
 		ChanpinRecordListDO crl = new ChanpinRecordListDO();
+		List<ChanpinRecordDetailsDO> titlexinxi1 = chanpin.getTitlexinxi();
+		for (ChanpinRecordDetailsDO xinxi : titlexinxi1) {
+			if(xinxi.getTitleName().equals("身份证号")){
+				crl.setIdentityCard(xinxi.getRemarks());
+			}
+		}
 		crl.setChanpinId(chanpin.getChanpinId());
 		crl.setChanpinName(chanpinListService.get(chanpin.getChanpinId()).getChanpinName());
 		crl.setAddTime(new Date());
@@ -110,6 +133,8 @@ public class indexController {
 				crd.setTitleType(1);
 				crd.setRemarks(xinxi.getRemarks());
 				crd.setAddTime(new Date());
+				crd.setChooseIds("0");
+				crd.setChooseSort(xinxi.getRemarks());
 				chanpinRecordDetailsService.save(crd);
 			}
 			List<ChanpinRecordDetailsDO> titlelist = chanpin.getTitlelist();
@@ -122,6 +147,8 @@ public class indexController {
 					crd2.setTitleType(chanpinRecordDetailsDO.getTitleType());
 					crd2.setRemarks(chanpinRecordDetailsDO.getRemarks());
 					crd2.setAddTime(new Date());
+					crd2.setChooseIds(chanpinRecordDetailsDO.getChooseIds());
+					crd2.setChooseSort(chanpinRecordDetailsDO.getChooseSort());
 					chanpinRecordDetailsService.save(crd2);
 				}
 			}

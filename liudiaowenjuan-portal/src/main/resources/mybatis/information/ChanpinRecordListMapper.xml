@@ -46,14 +46,16 @@
 			`chanpin_id`, 
 			`add_time`, 
 			`del_flag`,
-			chanpin_name
+			chanpin_name,
+			identity_card
 		)
 		values
 		(
 			#{chanpinId}, 
 			#{addTime}, 
 			#{delFlag},
-			#{chanpinName}
+			#{chanpinName},
+			#{identityCard}
 		)
 	</insert>
 	 
