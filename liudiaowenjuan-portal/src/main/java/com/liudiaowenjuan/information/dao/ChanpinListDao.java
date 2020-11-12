@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.liudiaowenjuan.information.domain.ChanpinListDO;
+import com.liudiaowenjuan.information.domain.StudentDO;
 
 /**
  * 
@@ -29,4 +30,6 @@ public interface ChanpinListDao {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
+
+	StudentDO getInfo(String id);
 }

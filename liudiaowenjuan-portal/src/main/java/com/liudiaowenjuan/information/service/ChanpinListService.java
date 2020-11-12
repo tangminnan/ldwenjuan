@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.liudiaowenjuan.information.domain.ChanpinListDO;
+import com.liudiaowenjuan.information.domain.StudentDO;
 
 /**
  * 
@@ -27,4 +28,6 @@ public interface ChanpinListService {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
+
+	StudentDO getInfo(String id);
 }

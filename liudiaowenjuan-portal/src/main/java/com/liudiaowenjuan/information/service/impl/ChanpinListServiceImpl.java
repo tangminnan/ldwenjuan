@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.liudiaowenjuan.information.dao.ChanpinListDao;
 import com.liudiaowenjuan.information.domain.ChanpinListDO;
+import com.liudiaowenjuan.information.domain.StudentDO;
 import com.liudiaowenjuan.information.service.ChanpinListService;
 
 import java.util.List;
@@ -50,6 +51,11 @@ public class ChanpinListServiceImpl implements ChanpinListService {
 	@Override
 	public int batchRemove(Integer[] ids){
 		return chanpinListDao.batchRemove(ids);
+	}
+
+	@Override
+	public StudentDO getInfo(String id) {
+		return chanpinListDao.getInfo(id);
 	}
 	
 }

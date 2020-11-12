@@ -83,5 +83,9 @@
 			#{id}
 		</foreach>
 	</delete>
+	
+	<select id="getInfo" resultType="com.liudiaowenjuan.information.domain.StudentDO">
+		select school,grade,student_class,identity_card,student_sex,address,height,weight,student_name,phone from t_student where id=#{id}
+	</select>
 
 </mapper>

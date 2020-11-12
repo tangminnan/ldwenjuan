@@ -11,11 +11,15 @@
 </head>
 <body class="DLbox">
 	<h3 th:text="${cplist.chanpinName}">眼健康调查问卷</h3>
+	<button type="button" id="scanQRCode" class="btn btn-success btn-xs">扫一扫</button>
 	<div class="inBox">
 		<input type="text" id="uname" placeholder="请输入“学生”姓名"/>
 		<input type="text" id="phone" placeholder="请输入您的手机号"/>
 		<input type="text" id="identityCard" placeholder="请填写学生身份证号"/>
 		<input type="text" id="sturelation" placeholder="请填写与学生关系"/>
+		<input type="hidden" id="timestamp" th:value="${timestamp}">
+		<input type="hidden" id="nonceStr" th:value="${nonceStr}">
+		<input type="hidden" id="signature" th:value="${signature}">
 		<!-- 
 		<input type="text" id="sex" placeholder="请输入您的性别"/>
 		<input type="text" id="minzu" placeholder="请填写民族"/>
@@ -33,13 +37,13 @@
 			</div>
 		<dd>为了保护学生眼健康，请确实填写本问卷调查，如有需要我们将与您联系进行随访调查，感谢您的配合！</dd>
 	</dl>
-	<input class="btn" type="button" value="开始答题"/>
+	<input class="btn" id="bt" type="button" value="开始答题"/>
 	<div class="copy" style="font-size: .4rem;">山东中医药大学附属眼科医院</div>
 	<div class="copy" style="font-size: .4rem;">山东省青少年视力低下防治中心 </div>
 	<input th:value = "${id}" id="chanpinId"  type="hidden" />
 	<div th:include="include::footer"></div>
 	<script type="text/javascript">
-		$(".btn").click(function(){
+		$("#bt").click(function(){
 			var uname = $("input[id='uname']").val();
 			var phone = $("input[id='phone']").val();
 			var identityCard = $("input[id='identityCard']").val();
@@ -94,6 +98,60 @@
     	});
 	
 	</script>
+	
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
+	<script>
+
+		document.querySelector('#scanQRCode').onclick = function() {
+            wx.config({
+                debug: false,
+                appId: 'wxa6898d89801a6fa5',
+                timestamp:$("#timestamp").val(),
+                nonceStr:$("#nonceStr").val(),
+                signature:$("#signature").val(),
+                jsApiList : [ 'checkJsApi', 'scanQRCode' ]
+            });
+            wx.error(function(res) {
+                alert("出错了：" + res.errMsg);
+            });
+            wx.ready(function() {
+                wx.checkJsApi({
+                    jsApiList: ['scanQRCode'],
+                    success: function (res) {
+
+                    }
+                });
+            });
+            wx.scanQRCode({
+                needResult : 1,
+                scanType : [ "qrCode" ], // 可以指定扫二维码还是一维码，默认二者都有
+                success : function(res) {
+                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    /**
+					 *  扫码 成功 查询信息
+                     */
+                    $.ajax({
+                        type: "GET",
+                        url: "/wenjuan/shouye/getInfo",
+                        data: {id:result},
+                        success: function(r){
+                           if(r!=null){
+                               $("#uname").val(r.studentName);
+                               $("#phone").val(r.phone);
+                               $("#identityCard").val(r.identityCard);
+                              
+						   }
+                        }
+                    });
+                }
+            });
+        };
+
+
+
+</script>
+	
 	
 </body>
 </html>

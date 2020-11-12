@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.liudiaowenjuan.common.utils.R;
+import com.liudiaowenjuan.common.utils.WeiScanUtils2;
 import com.liudiaowenjuan.information.domain.ChanpinDetailsDO;
 import com.liudiaowenjuan.information.domain.ChanpinListDO;
 import com.liudiaowenjuan.information.domain.ChanpinRecordDetailsDO;
 import com.liudiaowenjuan.information.domain.ChanpinRecordListDO;
 import com.liudiaowenjuan.information.domain.ChanpinTitleChooseDO;
+import com.liudiaowenjuan.information.domain.StudentDO;
 import com.liudiaowenjuan.information.service.ChanpinDetailsService;
 import com.liudiaowenjuan.information.service.ChanpinListService;
 import com.liudiaowenjuan.information.service.ChanpinRecordDetailsService;
@@ -48,6 +50,10 @@ public class indexController {
 	
 	@GetMapping("/wenjuan/shouye")
 	String shouye(Model model,Integer id){
+		Map<String,Object> map = WeiScanUtils2.sign("http://ldwenjuan.dddmaker.com/wenjuan/shouye?id="+id);
+		model.addAttribute("timestamp",map.get("timestam"));
+		model.addAttribute("nonceStr",map.get("nonceSt"));
+		model.addAttribute("signature",map.get("signatur"));
 		model.addAttribute("cplist",chanpinListService.get(id));
 		model.addAttribute("id",id);
 		return "information/shouye";
@@ -172,5 +178,23 @@ public class indexController {
 		return "information/chenggong";
 	}
 	
+	@GetMapping("/wenjuan/shouye/getInfo")
+	@ResponseBody
+	public StudentDO getInfo(String id){
+		id=id.split("JOIN")[1];
+		System.out.println("==================================");
+		System.out.println(id);
+		System.out.println(id);
+		System.out.println(id);
+		System.out.println(id);
+		System.out.println(id);
+		System.out.println(id);
+		System.out.println("===================================");
+		StudentDO studentDO  =  chanpinListService.getInfo(id);
+		if(studentDO.getPhone()!=null){
+			studentDO.setPhone(studentDO.getPhone().substring(0,11));
+		}
+		return studentDO;
+	}
 	
 }
